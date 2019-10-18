@@ -8,11 +8,13 @@ using namespace std;
 	VALC - Variable-agnostic Lambda Calculus
 
 	Syntax of a term:
-	<term> ::= !(lval) | <lval>:<rval>
-
-
-	<symbol> ::= [A-Z] | [a-z]
+	<term> ::= !(lval) | (<lval>)(<rval>)
+	<lval> ::= <term> | <variable>
+	<rval> ::= <lval> | <symbol>
 	<variable> ::= [0-Infinity]
+	<symbol> ::= [A-Z] | [a-z]
+
+	Example: Lx.Ly.Lz.(xz)(yz)
  */
 
 
