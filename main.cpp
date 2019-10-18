@@ -1,6 +1,5 @@
 #include <iostream>
-#include <string>
-#include <algorithm>
+#include "termtree.h"
 
 using namespace std;
 
@@ -14,50 +13,17 @@ using namespace std;
 	<variable> ::= [0-Infinity]
 	<symbol> ::= [A-Z] | [a-z]
 
-	Example: Lx.Ly.Lz.(xz)(yz)
+	Example 0: Lx.x -> !0
+	Example 1: Lx.Ly.x -> !(!(1))
+	Less strict: !!1
+	Example 2: Lf.(Lx.xx)(Lx.f(xx)) -> !((!((0)(x)))(!((1)((0)(0)))))
+	Less strict: !((!(0 0))(!(1(0 0))))
+	Example 3: Lx.Ly.Lz.(xz)(yz) -> !(!(!(((2)(0))((1)(0)))))(x)(y)(z)
+	Less strict: !!!((2 0)(1 0))xyz
  */
 
-
-void replaceAll(std::string& str, const string& from, const string& to) {
-	if(from.empty())
-		return;
-
-	size_t start_pos = 0;
-	while((start_pos = str.find(from, start_pos)) != string::npos) {
-		str.replace(start_pos, from.length(), to);
-		start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
-	}
-}
-
-size_t findClosingBrace(const string& text, const size_t& openingBracePos) {
-	char openingBraceChar = text[openingBracePos];
-	char closingBraceChar;
-
-	switch(openingBraceChar) {
-	case '(': closingBraceChar = ')'; break;
-	case '[': closingBraceChar = ']'; break;
-	case '{': closingBraceChar = '}'; break;
-	case '<': closingBraceChar = '>'; break;
-	default: return text.size(); // return impossible index
-	}
-
-	size_t closingBracePos;
-	uint scope = 0;
-	for(closingBracePos = openingBracePos; closingBracePos < text.size(); ++closingBracePos) {
-		if(text[closingBracePos] == openingBraceChar) {
-			++scope;
-		}
-		else if(text[closingBracePos] == closingBraceChar) {
-			--scope;
-			if(scope == 0)
-				break;
-		}
-	}
-
-	return closingBracePos;
-}
-
 int main() {
-	string test = "(fhs((a)(aa)))()";
-	cout << findClosingBrace(test, 4) << endl;
+	string test = "!!a";
+	term res;
+	valc::buildTermTree(test, res);
 }
