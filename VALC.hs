@@ -19,7 +19,7 @@ valcParser :: Parser VALC_Term
 valcParser = VALC_Chain <$> valcRawChain <&> tryCollapseChain
 
 valcRawChain :: Parser [VALC_Term]
-valcRawChain = sepBy optionalWs valcTerm <&> map tryCollapseChain -- optional works here?
+valcRawChain = sepBy optionalWs valcTerm <&> map tryCollapseChain
 
 valcTerm :: Parser VALC_Term
 valcTerm = optionalWs *>
@@ -53,15 +53,13 @@ getTerm :: String -> VALC_Term
 getTerm input = snd $ fromMaybe ("", VALC_Symbol "ERROR") $ runParser valcParser input
 
 eval :: VALC_Term -> VALC_Term
-eval (VALC_Chain (t1:t2:rest)) = tryCollapseChain $ VALC_Chain ((apply t1 t2):rest)
+eval (VALC_Chain (t1:t2:rest)) = tryCollapseChain $ VALC_Chain ((apply t1 t2):rest) -- if we eval the result, infinite recursion might appear
 eval other = other
 
 apply :: VALC_Term -> VALC_Term -> VALC_Term
 apply (VALC_Abstraction body) t2 = replaceVar 0 t2 body
-apply t1@(VALC_Symbol _)      t2 = VALC_Chain [t1, eval t2]
-apply t1@(VALC_Chain _)       t2 = apply (eval t1) t2
-
-apply t1 _ = t1
+apply t1@(VALC_Chain _)       t2 = apply (eval t1) t2 -- we need the left side before applying t2 to it
+apply t1                      t2 = VALC_Chain [t1, eval t2]
 
 replaceVar :: Integer -> VALC_Term -> VALC_Term -> VALC_Term
 replaceVar tval term v@(VALC_Variable val)
@@ -72,6 +70,7 @@ replaceVar tval term (VALC_Abstraction body) = VALC_Abstraction $ replaceVar (tv
 replaceVar _    _    other                   = other
 
 -- Show
+
 instance Show VALC_Term where
   show (VALC_Chain body)       = "(" ++ (foldl (++) "" $ map show body) ++ ") "
   show (VALC_Variable body)    = show body ++ " "
