@@ -18,11 +18,11 @@ Example: the reduction of a NAND gate applied to TRUE and FALSE
 which is TRUE.
 
 ## Pictures
-The above example
+The above example:
 
 ![NAND steps](https://github.com/42LoCo42/VALC/blob/master/nand-steps.png)
 
-All four possible inputs
+All four possible inputs (applying stuff to a chain force-evals that chain):
 
 ![NAND full](https://github.com/42LoCo42/VALC/blob/master/nand-full.png)
 
