@@ -17,7 +17,9 @@ Example: the reduction of a NAND gate applied to TRUE and FALSE
 ```
 which is TRUE.
 
-
+Some pictures:
+![NAND steps](https://github.com/42LoCo42/VALC/blob/master/nand-steps.png)
+![NAND full](https://github.com/42LoCo42/VALC/blob/master/nand-full.png)
 
 ## Why?
 Because I didn't realize that [De Brujin indexing](https://en.wikipedia.org/wiki/De_Bruijn_index) already exists.
