@@ -17,8 +17,13 @@ Example: the reduction of a NAND gate applied to TRUE and FALSE
 ```
 which is TRUE.
 
-Some pictures:
+## Pictures
+The above example
+
 ![NAND steps](https://github.com/42LoCo42/VALC/blob/master/nand-steps.png)
+
+All four possible inputs
+
 ![NAND full](https://github.com/42LoCo42/VALC/blob/master/nand-full.png)
 
 ## Why?
